@@ -111,70 +111,170 @@
             background-color: var(--dark-sage);
         }
 
-        /* --- Rocketry Projects Grid --- */
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2.5rem;
-        }
-
-        @media (max-width: 640px) {
-            .project-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .project-card {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .card-image {
-            aspect-ratio: 4 / 5;
-            background-color: var(--dark-sage);
-            background-size: cover;
-            background-position: center;
+        /* --- Rocket Diagram --- */
+        .rocket-wrapper {
             position: relative;
-            overflow: hidden;
-            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        /* Linked to your assets folder */
-        .p1 { background-image: url('assets/rocket1.jpeg'); }
-        .p2 { background-image: url('assets/rocket2.png'); }
-        .p3 { background-image: url('assets/rocket3.png'); }
-
-        .project-card:hover .card-image {
-            transform: translateY(-8px);
-        }
-
-        .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
-            height: 100%;
-            background: rgba(13, 18, 16, 0.9);
+        }
+
+        .rocket-img-horizontal {
+            display: block;
+            width: 100%;
+            height: auto;
+            opacity: 0.85;
+        }
+
+        .rocket-img-vertical {
+            display: none;
+            width: 100%;
+            height: auto;
+            opacity: 0.85;
+        }
+
+        .avionics-hotspot {
+            position: absolute;
+            left: 27%;
+            top: 10%;
+            width: 18%;
+            height: 80%;
+            cursor: pointer;
+            border: 1.5px solid transparent;
+            border-radius: 4px;
+            transition: border-color 0.3s ease, background 0.3s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            text-align: center;
-            padding: 2.5rem;
+            justify-content: flex-start;
+            padding-top: 6px;
         }
 
-        .project-card:hover .overlay {
+        .avionics-hotspot:hover {
+            border-color: var(--sage-green);
+            background: rgba(141, 163, 144, 0.07);
+        }
+
+        .hotspot-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--sage-green);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            white-space: nowrap;
+            background: rgba(13, 18, 16, 0.75);
+            padding: 2px 6px;
+        }
+
+        .avionics-hotspot:hover .hotspot-label {
             opacity: 1;
         }
 
-        .card-info {
-            margin-top: 1.5rem;
+        .hotspot-pulse {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--sage-green);
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: pulse 2s infinite;
         }
 
-        .card-info h3 { font-size: 1.3rem; margin-bottom: 0.3rem; }
-        .card-info p { font-size: 0.8rem; color: var(--sage-green); text-transform: uppercase; letter-spacing: 1px; }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); }
+            50% { opacity: 0.4; transform: translateX(-50%) scale(1.6); }
+        }
+
+        @media (max-width: 640px) {
+            .rocket-img-horizontal { display: none; }
+            .rocket-img-vertical { display: block; }
+            .avionics-hotspot {
+                left: 10%;
+                top: 22%;
+                width: 80%;
+                height: 22%;
+            }
+        }
+
+        /* --- Modal --- */
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(8, 12, 10, 0.92);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-backdrop.open {
+            display: flex;
+        }
+
+        .modal {
+            background: #111a14;
+            border: 1px solid rgba(141, 163, 144, 0.2);
+            max-width: 760px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 3rem;
+            position: relative;
+            animation: modalIn 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            color: var(--sage-green);
+            cursor: pointer;
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+        }
+
+        .modal-close:hover { color: var(--text-main); }
+
+        .modal-image {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+            display: block;
+            margin-bottom: 2rem;
+            background: var(--dark-sage);
+        }
+
+        .modal-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 2rem;
+            color: var(--sage-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-tag {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--dark-sage);
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-body {
+            font-size: 1rem;
+            color: var(--accent);
+            line-height: 1.8;
+        }
 
         /* --- Minimal Resume Section --- */
         .resume-container {
@@ -260,22 +360,27 @@
                 <h2>Technical Projects</h2>
                 <div class="line"></div>
             </div>
-            
-            <div class="project-grid">
-                <div class="project-card">
-                    <div class="card-image p1">
-                        <div class="overlay">
-                            <p>Designing and assembling avionics bays for high-power rocket payloads.</p>
-                        </div>
-                    </div>
-                    <div class="card-info">
-                        <h3>Avionics Bay</h3>
-                        <p>UBC Rocket / Avionics</p>
-                    </div>
-                </div>
 
+            <div class="rocket-wrapper">
+                <img class="rocket-img-horizontal" src="assets/horizontalor.png" alt="Rocket diagram" />
+                <img class="rocket-img-vertical" src="assets/horizontalor.png" alt="Rocket diagram" style="transform: rotate(90deg); transform-origin: center center;" />
+                <div class="avionics-hotspot" onclick="openModal()" title="Click to explore the Avionics Bay">
+                    <span class="hotspot-label">Avionics Bay — Click to explore</span>
+                    <span class="hotspot-pulse"></span>
+                </div>
             </div>
         </section>
+
+        <!-- Avionics Bay Modal -->
+        <div class="modal-backdrop" id="avionicsModal" onclick="closeOnBackdrop(event)">
+            <div class="modal">
+                <button class="modal-close" onclick="closeModal()">&#x2715; Close</button>
+                <img class="modal-image" src="assets/rocket1.jpeg" alt="Avionics Bay" />
+                <p class="modal-tag">UBC Rocket &mdash; Avionics</p>
+                <h2 class="modal-title">Avionics Bay</h2>
+                <p class="modal-body">MEOW</p>
+            </div>
+        </div>
 
         <section id="resume">
             <div class="section-header">
@@ -342,6 +447,24 @@
 
         textElement.onmouseover = event => scramble(event.target);
         window.onload = () => scramble(textElement);
+
+        function openModal() {
+            document.getElementById('avionicsModal').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('avionicsModal').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        function closeOnBackdrop(e) {
+            if (e.target === document.getElementById('avionicsModal')) closeModal();
+        }
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') closeModal();
+        });
 
         const nav = document.querySelector("nav");
         let lastScrollY = window.scrollY;
